@@ -1,6 +1,3 @@
-﻿  pch.cpp
-  dllmain.cpp
-  Functions.cpp
-  Generowanie kodu...
-     Trwa tworzenie biblioteki C:\Users\placu\Desktop\JA_PROJEKT\GreenScreenRemover\x64\Debug\DLLC.lib i obiektu C:\Users\placu\Desktop\JA_PROJEKT\GreenScreenRemover\x64\Debug\DLLC.exp
-  DLLC.vcxproj -> C:\Users\placu\Desktop\JA_PROJEKT\GreenScreenRemover\x64\Debug\DLLC.dll
+﻿  Functions.cpp
+     Trwa tworzenie biblioteki D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Debug\DLLC.lib i obiektu D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Debug\DLLC.exp
+  DLLC.vcxproj -> D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Debug\DLLC.dll
