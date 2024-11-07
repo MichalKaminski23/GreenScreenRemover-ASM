@@ -46,9 +46,14 @@
             this.thread2 = new System.Windows.Forms.RadioButton();
             this.thread1 = new System.Windows.Forms.RadioButton();
             this.beforePicture = new System.Windows.Forms.PictureBox();
+            this.afterPicture = new System.Windows.Forms.PictureBox();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.timeTextLabel = new System.Windows.Forms.Label();
+            this.timeResultLabel = new System.Windows.Forms.Label();
             this.dllPanel.SuspendLayout();
             this.threadPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.beforePicture)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.afterPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // removeGreenScreenButton
@@ -108,7 +113,7 @@
             this.openFileButton.Name = "openFileButton";
             this.openFileButton.Size = new System.Drawing.Size(125, 75);
             this.openFileButton.TabIndex = 9;
-            this.openFileButton.Text = "Upload .bmp photo";
+            this.openFileButton.Text = "Upload\r\n .bmp or .jpg (.jpeg) photo";
             this.openFileButton.UseVisualStyleBackColor = false;
             this.openFileButton.Click += new System.EventHandler(this.openFileButton_Click);
             // 
@@ -258,12 +263,59 @@
             this.beforePicture.TabIndex = 16;
             this.beforePicture.TabStop = false;
             // 
+            // afterPicture
+            // 
+            this.afterPicture.Enabled = false;
+            this.afterPicture.Location = new System.Drawing.Point(12, 9);
+            this.afterPicture.Name = "afterPicture";
+            this.afterPicture.Size = new System.Drawing.Size(800, 500);
+            this.afterPicture.TabIndex = 17;
+            this.afterPicture.TabStop = false;
+            // 
+            // saveButton
+            // 
+            this.saveButton.BackColor = System.Drawing.SystemColors.ButtonShadow;
+            this.saveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.saveButton.Location = new System.Drawing.Point(687, 545);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(125, 75);
+            this.saveButton.TabIndex = 18;
+            this.saveButton.Text = "Save changed image";
+            this.saveButton.UseVisualStyleBackColor = false;
+            this.saveButton.Visible = false;
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            // 
+            // timeTextLabel
+            // 
+            this.timeTextLabel.AutoSize = true;
+            this.timeTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.timeTextLabel.Location = new System.Drawing.Point(12, 572);
+            this.timeTextLabel.Name = "timeTextLabel";
+            this.timeTextLabel.Size = new System.Drawing.Size(390, 20);
+            this.timeTextLabel.TabIndex = 19;
+            this.timeTextLabel.Text = "Time for selected threads, DLL and photo [ms]: \r\n";
+            this.timeTextLabel.Visible = false;
+            // 
+            // timeResultLabel
+            // 
+            this.timeResultLabel.AutoSize = true;
+            this.timeResultLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.timeResultLabel.Location = new System.Drawing.Point(401, 572);
+            this.timeResultLabel.Name = "timeResultLabel";
+            this.timeResultLabel.Size = new System.Drawing.Size(0, 20);
+            this.timeResultLabel.TabIndex = 20;
+            this.timeResultLabel.Visible = false;
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonShadow;
             this.ClientSize = new System.Drawing.Size(980, 632);
+            this.Controls.Add(this.timeResultLabel);
+            this.Controls.Add(this.timeTextLabel);
+            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.afterPicture);
             this.Controls.Add(this.beforePicture);
             this.Controls.Add(this.threadPanel);
             this.Controls.Add(this.dllPanel);
@@ -281,6 +333,7 @@
             this.threadPanel.ResumeLayout(false);
             this.threadPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.beforePicture)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.afterPicture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -306,6 +359,10 @@
         private System.Windows.Forms.RadioButton thread4;
         private System.Windows.Forms.RadioButton thread16;
         private System.Windows.Forms.PictureBox beforePicture;
+        private System.Windows.Forms.PictureBox afterPicture;
+        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Label timeTextLabel;
+        private System.Windows.Forms.Label timeResultLabel;
     }
 }
 
