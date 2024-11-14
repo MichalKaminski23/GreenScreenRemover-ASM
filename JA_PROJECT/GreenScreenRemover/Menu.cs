@@ -14,7 +14,13 @@ namespace GreenScreenRemover
     {
         private Bitmap bitmap;
 
-        // Importing functions from external DLLs
+        //Sposób o którym Pani mówiła działa, ale potem samo wywołanie dll w projekcie nie działa bo nie znajduje ich :((
+        //[DllImport(@"..\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll")]
+        //static extern int MyProc1(int a, int b);
+        //[DllImport(@"..\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll")]
+        //static extern void removeGreenScreenC(byte[] pixels, int width, int height, int startRow, int numRows);
+
+        //Importing functions from external DLLs
         [DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll")]
         static extern int MyProc1(int a, int b);
 
@@ -190,8 +196,10 @@ namespace GreenScreenRemover
                 List<Thread> threads = new List<Thread>();
                 int maxThreads = Math.Min(threadsSelected, Environment.ProcessorCount);
 
-                MessageBox.Show($"Height: {bitmap.Height.ToString()}");
-                MessageBox.Show($"Width : {bitmap.Width.ToString()}");
+                // MessageBox.Show($"Height: {bitmap.Height.ToString()}");
+                // MessageBox.Show($"Width : {bitmap.Width.ToString()}");
+
+                //!!!pomyśleć o użyciu fixed!!! 
 
                 // Create and start threads to process the image
                 for (int i = 0; i < maxThreads; i++)
@@ -200,13 +208,13 @@ namespace GreenScreenRemover
                     int startRow = i * (bitmap.Height / maxThreads);
                     int numRows = (i == maxThreads - 1) ? bitmap.Height - startRow : (bitmap.Height / maxThreads);
 
+                    // var to store the index of the thread for debugging purposes
                     int threadIndex = i;
                     Thread thread = new Thread(() =>
                     {
                         try
                         {
                             //MessageBox.Show($"Thread {threadIndex + 1} is processing {numRows} rows starting from row {startRow}");
-
                             // Call the appropriate DLL function based on the selected option
                             if (dllOption == 1)
                             {
@@ -223,15 +231,12 @@ namespace GreenScreenRemover
                             MessageBox.Show($"Error in thread {threadIndex}: {ex.Message}");
                         }
                     });
-                    threads.Add(thread);
                     thread.Start();
+                    threads.Add(thread);
                 }
 
                 // Wait for all threads to complete
-                foreach (var thread in threads)
-                {
-                    thread.Join();
-                }
+                threads.ForEach(thread => thread.Join());
 
                 // Stop the stopwatch
                 sw.Stop();
