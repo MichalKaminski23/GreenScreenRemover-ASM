@@ -1,19 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\placu\\GreenScreenRemover-ASM\\JA_PROJECT\\GreenScreenRemover\\",
+  "WorkspaceRootPath": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|c:\\users\\placu\\greenscreenremover-asm\\ja_project\\greenscreenremover\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|d:\\onedrive\\studia\\rok_3\\ja\\projekt\\ja_project\\greenscreenremover\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|solutionrelative:menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\placu\\Desktop\\JA_PROJEKT\\DLLC\\Functions.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\placu\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.def||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\placu\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.asm||{8B382828-6202-11D1-8870-0000F87579D2}"
+      "AbsoluteMoniker": "D:0:0:{FB508D7A-20AD-4F73-B35E-2EA8C6D3F5A3}|..\\DLLC\\DLLC.vcxproj|D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLC\\Functions.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -29,50 +23,27 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "Functions.cpp",
-              "DocumentMoniker": "C:\\Users\\placu\\Desktop\\JA_PROJEKT\\DLLC\\Functions.cpp",
-              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\JA_PROJEKT\\DLLC\\Functions.cpp",
-              "ToolTip": "C:\\Users\\placu\\Desktop\\JA_PROJEKT\\DLLC\\Functions.cpp",
-              "RelativeToolTip": "..\\..\\..\\Desktop\\JA_PROJEKT\\DLLC\\Functions.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAArAAAAAAAAAA==",
+              "DocumentMoniker": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLC\\Functions.cpp",
+              "RelativeDocumentMoniker": "..\\DLLC\\Functions.cpp",
+              "ToolTip": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLC\\Functions.cpp",
+              "RelativeToolTip": "..\\DLLC\\Functions.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-10-15T18:59:31.179Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\placu\\GreenScreenRemover-ASM\\JA_PROJECT\\GreenScreenRemover\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Users\\placu\\GreenScreenRemover-ASM\\JA_PROJECT\\GreenScreenRemover\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-15T18:24:18.323Z",
+              "WhenOpened": "2024-10-29T17:45:03.122Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "JAAsm.def",
-              "DocumentMoniker": "C:\\Users\\placu\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.def",
-              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.def",
-              "ToolTip": "C:\\Users\\placu\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.def",
-              "RelativeToolTip": "..\\..\\..\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.def",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001913|",
-              "WhenOpened": "2024-10-15T18:08:42.321Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "JAAsm.asm",
-              "DocumentMoniker": "C:\\Users\\placu\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.asm",
-              "RelativeDocumentMoniker": "..\\..\\..\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.asm",
-              "ToolTip": "C:\\Users\\placu\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.asm",
-              "RelativeToolTip": "..\\..\\..\\Desktop\\JA_PROJEKT\\DLLASM\\JAAsm.asm",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2024-10-15T18:08:21.715Z"
+              "DocumentIndex": 0,
+              "Title": "Menu.cs",
+              "DocumentMoniker": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\Menu.cs",
+              "RelativeDocumentMoniker": "Menu.cs",
+              "ToolTip": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\Menu.cs",
+              "RelativeToolTip": "Menu.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAcwE8AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-28T18:47:44.215Z",
+              "EditorCaption": ""
             }
           ]
         }

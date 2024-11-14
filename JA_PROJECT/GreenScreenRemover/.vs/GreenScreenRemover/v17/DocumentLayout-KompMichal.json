@@ -1,0 +1,68 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|d:\\onedrive\\studia\\rok_3\\ja\\projekt\\ja_project\\greenscreenremover\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|solutionrelative:menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{FB508D7A-20AD-4F73-B35E-2EA8C6D3F5A3}|..\\DLLC\\DLLC.vcxproj|D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLC\\Functions.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|solutionrelative:menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Functions.cpp",
+              "DocumentMoniker": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLC\\Functions.cpp",
+              "RelativeDocumentMoniker": "..\\DLLC\\Functions.cpp",
+              "ToolTip": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLC\\Functions.cpp",
+              "RelativeToolTip": "..\\DLLC\\Functions.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-10-29T17:45:03.122Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Menu.cs",
+              "DocumentMoniker": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\Menu.cs",
+              "RelativeDocumentMoniker": "Menu.cs",
+              "ToolTip": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\Menu.cs",
+              "RelativeToolTip": "Menu.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAmwKoAAABsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-28T18:47:44.215Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Menu.cs [Projekt]",
+              "DocumentMoniker": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\Menu.cs",
+              "RelativeDocumentMoniker": "Menu.cs",
+              "ToolTip": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\Menu.cs [Projekt]*",
+              "RelativeToolTip": "Menu.cs [Projekt]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003525|",
+              "WhenOpened": "2024-10-28T18:47:36.982Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
