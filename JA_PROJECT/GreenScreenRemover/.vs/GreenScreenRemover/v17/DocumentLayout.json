@@ -8,6 +8,9 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{FB508D7A-20AD-4F73-B35E-2EA8C6D3F5A3}|..\\DLLC\\DLLC.vcxproj|D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLC\\Functions.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0CA7FF1-524C-41BE-8869-2A5D2C3194AE}|..\\DLLASM\\DLLASM.vcxproj|D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLASM\\JAAsm.asm||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -17,7 +20,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -27,9 +30,22 @@
               "RelativeDocumentMoniker": "..\\DLLC\\Functions.cpp",
               "ToolTip": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLC\\Functions.cpp",
               "RelativeToolTip": "..\\DLLC\\Functions.cpp",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-10-29T17:45:03.122Z",
+              "WhenOpened": "2024-12-22T13:33:57.33Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "JAAsm.asm",
+              "DocumentMoniker": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLASM\\JAAsm.asm",
+              "RelativeDocumentMoniker": "..\\DLLASM\\JAAsm.asm",
+              "ToolTip": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\DLLASM\\JAAsm.asm",
+              "RelativeToolTip": "..\\DLLASM\\JAAsm.asm",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-10T18:21:07.881Z",
               "EditorCaption": ""
             },
             {
@@ -40,7 +56,7 @@
               "RelativeDocumentMoniker": "Menu.cs",
               "ToolTip": "D:\\OneDrive\\STUDIA\\ROK_3\\JA\\PROJEKT\\JA_PROJECT\\GreenScreenRemover\\Menu.cs",
               "RelativeToolTip": "Menu.cs",
-              "ViewState": "AgIAAAYBAAAAAAAAAAAYwMkAAAAVAAAAAAAAAA==",
+              "ViewState": "AgIAAKwAAAAAAAAAAAAYwAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-28T18:47:44.215Z",
               "EditorCaption": ""

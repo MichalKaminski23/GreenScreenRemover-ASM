@@ -14,18 +14,12 @@ namespace GreenScreenRemover
     {
         private Bitmap bitmap;
 
-        //Sposób o którym Pani mówiła działa, ale potem samo wywołanie dll w projekcie nie działa bo nie znajduje ich :((
-        //[DllImport(@"..\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll")]
-        //static extern int MyProc1(int a, int b);
-        //[DllImport(@"..\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll")]
-        //static extern void removeGreenScreenC(byte[] pixels, int width, int height, int startRow, int numRows);
-
         //Importing functions from external DLLs
         [DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll")]
-        static extern int MyProc1(int a, int b);
+        static extern void removeGreenScreenASM(byte[] pixels, int width, int startRow, int numRows);
 
-        [DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll")]
-        static extern void removeGreenScreenC(byte[] pixels, int width, int height, int startRow, int numRows);
+        [DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern void removeGreenScreenC(byte[] pixels, int width, int startRow, int numRows);
 
         // Initialaze the menu
         public Menu()
@@ -83,55 +77,57 @@ namespace GreenScreenRemover
         // Get the selected DLL option
         private byte getDllOption()
         {
-            if (cButton.Checked)
-            {
-                return 1;
-            }
-            else if (asmButton.Checked)
-            {
-                return 2;
-            }
-            else
-            {
-                return 255;
-            }
+            //if (cButton.Checked)
+            //{
+            //    return 1;
+            //}
+            //else if (asmButton.Checked)
+            //{
+            //    return 2;
+            //}
+            //else
+            //{
+            //    return 255;
+            //}
+            return 2;
         }
 
         // Get the selected thread option
         private byte getThreadOption()
         {
-            if (thread1.Checked)
-            {
-                return 1;
-            }
-            else if (thread2.Checked)
-            {
-                return 2;
-            }
-            else if (thread4.Checked)
-            {
-                return 4;
-            }
-            else if (thread8.Checked)
-            {
-                return 8;
-            }
-            else if (thread16.Checked)
-            {
-                return 16;
-            }
-            else if (thread32.Checked)
-            {
-                return 32;
-            }
-            else if (thread64.Checked)
-            {
-                return 64;
-            }
-            else
-            {
-                return 255;
-            }
+            //if (thread1.Checked)
+            //{
+            //    return 1;
+            //}
+            //else if (thread2.Checked)
+            //{
+            //    return 2;
+            //}
+            //else if (thread4.Checked)
+            //{
+            //    return 4;
+            //}
+            //else if (thread8.Checked)
+            //{
+            //    return 8;
+            //}
+            //else if (thread16.Checked)
+            //{
+            //    return 16;
+            //}
+            //else if (thread32.Checked)
+            //{
+            //    return 32;
+            //}
+            //else if (thread64.Checked)
+            //{
+            //    return 64;
+            //}
+            //else
+            //{
+            //    return 255;
+            //}
+            return 1;
         }
 
         // Event handler for the remove green screen button
@@ -139,6 +135,10 @@ namespace GreenScreenRemover
         {
             byte threadSelected = getThreadOption();
             byte dllOption = getDllOption();
+
+            string testImagePath = @"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\2JPG.jpg";
+            beforePicture.Image = new Bitmap(testImagePath);
+            beforePicture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             if (threadSelected == 255)
             {
@@ -155,7 +155,6 @@ namespace GreenScreenRemover
                 MessageBox.Show("Choose a picture!");
                 return;
             }
-
             processImage(dllOption, threadSelected);
         }
 
@@ -188,6 +187,8 @@ namespace GreenScreenRemover
                 // Copy the RGB values into the array
                 Marshal.Copy(ptr, rgbValues, 0, bytes);
 
+                removeGreenScreenASM(rgbValues, bitmap.Width, 0, 0);
+
                 // Start the stopwatch to measure processing time
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
@@ -195,12 +196,7 @@ namespace GreenScreenRemover
                 // Create a list to hold the threads
                 List<Thread> threads = new List<Thread>();
                 int maxThreads = Math.Min(threadsSelected, Environment.ProcessorCount);
-
-                // MessageBox.Show($"Height: {bitmap.Height.ToString()}");
-                // MessageBox.Show($"Width : {bitmap.Width.ToString()}");
-
-                //!!!pomyśleć o użyciu fixed!!! 
-
+                
                 // Create and start threads to process the image
                 for (int i = 0; i < maxThreads; i++)
                 {
@@ -214,15 +210,14 @@ namespace GreenScreenRemover
                     {
                         try
                         {
-                            //MessageBox.Show($"Thread {threadIndex + 1} is processing {numRows} rows starting from row {startRow}");
                             // Call the appropriate DLL function based on the selected option
                             if (dllOption == 1)
                             {
-                                removeGreenScreenC(rgbValues, bitmap.Width, bitmap.Height, startRow, numRows);
+                                removeGreenScreenC(rgbValues, bitmap.Width, startRow, numRows);
                             }
                             else if (dllOption == 2)
                             {
-                                // TODO: removeGreenScreenASM
+                                //removeGreenScreenASM(rgbValues, bitmap.Width, startRow, numRows);
                             }
                         }
                         catch (Exception ex)

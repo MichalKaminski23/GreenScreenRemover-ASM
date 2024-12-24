@@ -20,9 +20,9 @@ D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\bin\x64\Releas
 D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\bin\x64\Release\GreenScreenRemover.exe
 D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\bin\x64\Release\GreenScreenRemover.pdb
 D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\obj\x64\Release\GreenScreenRemover.csproj.AssemblyReference.cache
+D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\obj\x64\Release\GreenScreenRemover.Menu.resources
 D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\obj\x64\Release\GreenScreenRemover.Properties.Resources.resources
 D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\obj\x64\Release\GreenScreenRemover.csproj.GenerateResource.cache
 D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\obj\x64\Release\GreenScreenRemover.csproj.CoreCompileInputs.cache
 D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\obj\x64\Release\GreenScreenRemover.exe
 D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\obj\x64\Release\GreenScreenRemover.pdb
-D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\obj\x64\Release\GreenScreenRemover.Menu.resources

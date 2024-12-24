@@ -1,2 +1,2 @@
 LIBRARY DLLASM
-EXPORTS MyProc1
+EXPORTS removeGreenScreenASM
