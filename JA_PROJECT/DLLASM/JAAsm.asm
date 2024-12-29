@@ -1,70 +1,44 @@
+.data
+tolerance DB 50 ; tolerance for green color
+minGreen DB 100 ; minimum green value
+strideMultiplier DW 3 ; 3 bytes per pixel
+
 .code
-
 removeGreenScreenASM proc
-    ; Arguments
-    ; RCX = array of pixels
-    ; RDX = width of the image
-    ; R8 = start row to process
-    ; R9 = num rows to process
+; Arguments:
+; RCX = pixels
+; RDX = width
+; R8 = startRow
+; R9 = numRows
 
-    MOV RCX, 0
-    MOV RDX, 0
-    MOV R8, 0
-    MOV R9, 0
+MOV RAX, RDX ; move width (RDX) to RAX
+MOVZX RBX, strideMultiplier ; move strideMultiplier to RBX
+MUL RBX ; RAX = RDX * strideMultiplier
+MOV R10, RAX ; move stride (RAX) to R10 
 
-    ; Load the address of the first pixel
-    MOV RAX, RCX    
+ADD R9, R8 ; add startRow (R8) to numRows (R9) 
+MOV R11, R9 ; move numRows (R9) to R11
 
-    ret
+rowLoop:
+    CMP R8, R11 ; check if R8 == R11
+    JE endLoop ; if R8 == R11, jump to endLoop
+    INC R8 ; increment R8
+    MOV R12, 0 ; R12 = 0 - column counter
+    JMP columnLoop ; jump to columnLoop
+
+
+columnLoop:
+    CMP R12, RDX ; check if R12 == RDX
+    JE rowLoop ; if R12 == RDX, jump to rowLoop
+
+    ; int index = y * stride + x * 3 ;
+    MOV RAX, R10 ; RAX = R10 = stride
+;    MOVZX RBX, R8 ; RBX = R8 = y
+
+
+    
+
+endLoop:
+        RET
 removeGreenScreenASM endp
-
 END
-
-;.code
-
-;removeGreenScreenASM proc
-    ; Parametry funkcji:
-    ; RCX - wskaŸnik do tablicy bajtów (pixels)
-    ; RDX - szerokoœæ obrazu (width)
-    ; R8  - pocz¹tkowy wiersz (startRow)
-    ; R9  - liczba wierszy (numRows)
-
-    ; Przyk³ad: iteracja po tablicy bajtów
-    ; Zak³adamy, ¿e ka¿dy piksel to 3 bajty (RGB)
-    ; i przetwarzamy ka¿dy piksel w podanym zakresie wierszy
-
-    ; Oblicz offset pocz¹tkowego wiersza
- ;   mov rax, r8          ; rax = startRow
- ;   imul rax, rdx        ; rax = startRow * width
- ;   imul rax, 3          ; rax = startRow * width * 3 (rozmiar piksela w bajtach)
-  ;  add rcx, rax         ; rcx = pixels + offset
-
-    ; Oblicz liczbê bajtów do przetworzenia
-  ;  mov rax, r9          ; rax = numRows
-  ;  imul rax, rdx        ; rax = numRows * width
-  ;  imul rax, 3          ; rax = numRows * width * 3 (rozmiar piksela w bajtach)
-
-    ; Przetwarzaj piksele
-;process_pixels:
-    ; SprawdŸ, czy przetworzyliœmy wszystkie bajty
- ;   test rax, rax
- ;   jz done
-
-    ; Przyk³ad: ustawienie wartoœci piksela na czarny (0, 0, 0)
-   ; mov byte ptr [rcx], 0    ; Ustaw R
-   ; mov byte ptr [rcx+1], 0  ; Ustaw G
-   ; mov byte ptr [rcx+2], 0  ; Ustaw B
-
-    ; PrzejdŸ do nastêpnego piksela
-   ; add rcx, 3
-   ; sub rax, 3
-  ;  jmp process_pixels
-
-;done:
- ;   ret  
-
-
-
-;removeGreenScreenASM endp
-
-;END

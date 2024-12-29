@@ -36,8 +36,3 @@ extern "C" __declspec(dllexport) void removeGreenScreenC(unsigned char* pixels, 
         }
     }
 }
-
-
-
-
-

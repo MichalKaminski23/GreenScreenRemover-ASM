@@ -15,11 +15,11 @@ namespace GreenScreenRemover
         private Bitmap bitmap;
 
         //Importing functions from external DLLs
-        [DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll")]
-        static extern void removeGreenScreenASM(byte[] pixels, int width, int startRow, int numRows);
+        [DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern unsafe void removeGreenScreenASM(byte* pixels, int width, int startRow, int numRows);
 
         [DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern void removeGreenScreenC(byte[] pixels, int width, int startRow, int numRows);
+        static extern unsafe void removeGreenScreenC(byte* pixels, int width, int startRow, int numRows);
 
         // Initialaze the menu
         public Menu()
@@ -161,105 +161,113 @@ namespace GreenScreenRemover
         // Process the image to remove the green screen
         private void processImage(byte dllOption, byte threadsSelected)
         {
-            try
+            unsafe
             {
-                // Load the image from the PictureBox into a Bitmap object
-                bitmap = new Bitmap(beforePicture.Image);
-
-                // Ensure the bitmap is in 24bpp RGB format
-                if (bitmap.PixelFormat != PixelFormat.Format24bppRgb)
+                try
                 {
-                    // Clone the bitmap to convert it to 24bpp RGB format
-                    bitmap = bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), PixelFormat.Format24bppRgb);
-                }
+                    // Load the image from the PictureBox into a Bitmap object
+                    bitmap = new Bitmap(beforePicture.Image);
 
-                // Lock the bitmap's bits for read/write access
-                Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
-                BitmapData bmpData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, bitmap.PixelFormat);
-
-                // Get the address of the first pixel data
-                IntPtr ptr = bmpData.Scan0;
-
-                // Declare an array to hold the bytes of the bitmap
-                int bytes = Math.Abs(bmpData.Stride) * bitmap.Height;
-                byte[] rgbValues = new byte[bytes];
-
-                // Copy the RGB values into the array
-                Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-                removeGreenScreenASM(rgbValues, bitmap.Width, 0, 0);
-
-                // Start the stopwatch to measure processing time
-                Stopwatch sw = new Stopwatch();
-                sw.Start();
-
-                // Create a list to hold the threads
-                List<Thread> threads = new List<Thread>();
-                int maxThreads = Math.Min(threadsSelected, Environment.ProcessorCount);
-                
-                // Create and start threads to process the image
-                for (int i = 0; i < maxThreads; i++)
-                {
-                    // Calculate the starting row and number of rows for each thread
-                    int startRow = i * (bitmap.Height / maxThreads);
-                    int numRows = (i == maxThreads - 1) ? bitmap.Height - startRow : (bitmap.Height / maxThreads);
-
-                    // var to store the index of the thread for debugging purposes
-                    int threadIndex = i;
-                    Thread thread = new Thread(() =>
+                    // Ensure the bitmap is in 24bpp RGB format
+                    if (bitmap.PixelFormat != PixelFormat.Format24bppRgb)
                     {
-                        try
+                        // Clone the bitmap to convert it to 24bpp RGB format
+                        bitmap = bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), PixelFormat.Format24bppRgb);
+                    }
+
+                    // Lock the bitmap's bits for read/write access
+                    Rectangle rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+                    BitmapData bmpData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, bitmap.PixelFormat);
+
+                    // Get the address of the first pixel data
+                    IntPtr ptr = bmpData.Scan0;
+
+                    // Declare an array to hold the bytes of the bitmap
+                    int bytes = Math.Abs(bmpData.Stride) * bitmap.Height;
+                    byte[] rgbValues = new byte[bytes];
+
+                    // Copy the RGB values into the array
+                    Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+                    fixed (byte* p = rgbValues)
+                    {
+                        removeGreenScreenASM(p, bitmap.Width, 5, 2);
+                        // Start the stopwatch to measure processing time
+                        Stopwatch sw = new Stopwatch();
+                        sw.Start();
+
+                        // Create a list to hold the threads
+                        List<Thread> threads = new List<Thread>();
+                        int maxThreads = Math.Min(threadsSelected, Environment.ProcessorCount);
+
+                        // Create and start threads to process the image
+                        for (int i = 0; i < maxThreads; i++)
                         {
-                            // Call the appropriate DLL function based on the selected option
-                            if (dllOption == 1)
+                            // Calculate the starting row and number of rows for each thread
+                            int startRow = i * (bitmap.Height / maxThreads);
+                            int numRows = (i == maxThreads - 1) ? bitmap.Height - startRow : (bitmap.Height / maxThreads);
+
+                            // var to store the index of the thread for debugging purposes
+                            int threadIndex = i;
+
+                            byte* pLocal = p;
+
+                            Thread thread = new Thread(() =>
                             {
-                                removeGreenScreenC(rgbValues, bitmap.Width, startRow, numRows);
-                            }
-                            else if (dllOption == 2)
-                            {
-                                //removeGreenScreenASM(rgbValues, bitmap.Width, startRow, numRows);
-                            }
+                                try
+                                {
+                                    // Call the appropriate DLL function based on the selected option
+                                    if (dllOption == 1)
+                                    {
+                                        removeGreenScreenC(pLocal, bitmap.Width, startRow, numRows);
+                                    }
+                                    else if (dllOption == 2)
+                                    {
+                                        //removeGreenScreenASM(rgbValues, bitmap.Width, startRow, numRows);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    // Display an error message if an exception occurs in the thread
+                                    MessageBox.Show($"Error in thread {threadIndex}: {ex.Message}");
+                                }
+                            });
+                            thread.Start();
+                            threads.Add(thread);
                         }
-                        catch (Exception ex)
-                        {
-                            // Display an error message if an exception occurs in the thread
-                            MessageBox.Show($"Error in thread {threadIndex}: {ex.Message}");
-                        }
-                    });
-                    thread.Start();
-                    threads.Add(thread);
+
+                        // Wait for all threads to complete
+                        threads.ForEach(thread => thread.Join());
+
+                        // Stop the stopwatch
+                        sw.Stop();
+
+                        // Copy the modified RGB values back to the bitmap
+                        Marshal.Copy(rgbValues, 0, ptr, bytes);
+                        bitmap.UnlockBits(bmpData);
+
+                        // Update the UI to show the processed image
+                        beforePicture.Visible = false;
+                        afterPicture.Visible = true;
+                        afterPicture.Image = bitmap;
+                        afterPicture.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                        // Display the processing time
+                        timeTextLabel.Visible = true;
+                        timeResultLabel.Visible = true;
+                        timeResultLabel.Text = sw.ElapsedMilliseconds.ToString() + " ms";
+
+                        // Enable the save button and attach the click event handler
+                        saveButton.Visible = true;
+                        saveButton.Click -= new EventHandler(saveButton_Click);
+                        saveButton.Click += new EventHandler(saveButton_Click);
+                    }
                 }
-
-                // Wait for all threads to complete
-                threads.ForEach(thread => thread.Join());
-
-                // Stop the stopwatch
-                sw.Stop();
-
-                // Copy the modified RGB values back to the bitmap
-                Marshal.Copy(rgbValues, 0, ptr, bytes);
-                bitmap.UnlockBits(bmpData);
-
-                // Update the UI to show the processed image
-                beforePicture.Visible = false;
-                afterPicture.Visible = true;
-                afterPicture.Image = bitmap;
-                afterPicture.SizeMode = PictureBoxSizeMode.StretchImage;
-
-                // Display the processing time
-                timeTextLabel.Visible = true;
-                timeResultLabel.Visible = true;
-                timeResultLabel.Text = sw.ElapsedMilliseconds.ToString() + " ms";
-
-                // Enable the save button and attach the click event handler
-                saveButton.Visible = true;
-                saveButton.Click -= new EventHandler(saveButton_Click);
-                saveButton.Click += new EventHandler(saveButton_Click);
-            }
-            catch (Exception ex)
-            {
-                // Display an error message if an exception occurs
-                MessageBox.Show("Error: " + ex.Message);
+                catch (Exception ex)
+                {
+                    // Display an error message if an exception occurs
+                    MessageBox.Show("Error: " + ex.Message);
+                }
             }
         }
 
