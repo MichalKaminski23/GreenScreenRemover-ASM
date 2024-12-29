@@ -199,7 +199,7 @@ namespace GreenScreenRemover
 
                     fixed (byte* p = rgbValues)
                     {
-                        removeGreenScreenASM(p, bitmap.Width, 5, 2);
+                        //removeGreenScreenASM(p, 10, 5, 10);
                         // Start the stopwatch to measure processing time
                         Stopwatch sw = new Stopwatch();
                         sw.Start();
@@ -231,7 +231,7 @@ namespace GreenScreenRemover
                                     }
                                     else if (dllOption == 2)
                                     {
-                                        //removeGreenScreenASM(rgbValues, bitmap.Width, startRow, numRows);
+                                        removeGreenScreenASM(pLocal, bitmap.Width, startRow, numRows);
                                     }
                                 }
                                 catch (Exception ex)

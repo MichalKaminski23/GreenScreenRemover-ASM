@@ -14,11 +14,17 @@ removeGreenScreenASM proc
 ; save width in R13
 MOV R13, RDX ; move width (RDX) to R13
 
+;PUSH RBP ; save RBP to stack
+;MOV RBP, RSP ; move RSP to RBP
+;SUB RSP, 32 ; allocate space for local variables
+
 ; calculate stride
+;PUSH RDX ; save RDX to stack
 MOV RAX, RDX ; move width (RDX) to RAX
 MOVZX RBX, strideMultiplier ; move strideMultiplier to RBX
 MUL RBX ; RAX = RDX * strideMultiplier
 MOV R10, RAX ; move stride (RAX) to R10 
+;POP RDX ; restore RDX
 
 ; calculate endRow
 ADD R9, R8 ; add startRow (R8) to numRows (R9) 
@@ -30,9 +36,10 @@ rowLoop:
     XOR R12, R12 ; clear R12 (x)
 
 columnLoop:
-    CMP R12, R13 ; check if R12 == R13
+    CMP R12, RDX ; check if R12 == RDX
     JE nextRow ; if R12 == R13, jump to nextRow
     ; else calculate index -> int index = y * stride + x * 3 ;
+    ;PUSH RDX ; save RDX to stack
     MOV RAX, R10 ; move stride (R10) to RAX
     MOV RBX, R8 ; move y (R8) to RBX
     MUL RBX ; RAX = R10 * RBX
@@ -45,11 +52,32 @@ columnLoop:
     POP RAX ; pop y * stride (RAX) from stack
     ADD RAX, R14 ; RAX = y * stride + x * 3
     MOV R14, RAX ; move index (RAX) to R14
+    ;POP RDX ; restore RDX
 
-    ; get pixel
+    MOV AL, BYTE PTR [RCX + R14]     ; load blue value
+    MOV BL, BYTE PTR [RCX + R14 + 1] ; load green value
+    MOV DL, BYTE PTR [RCX + R14 + 2] ; load red value
 
+    ; check if green value is greater than minGreen
+    CMP BL, minGreen
+    JL skipPixel ; if green value < minGreen, jump to skipPixel
 
+    ; check if red value is greater than green value + tolerance
+    ;XOR R15, R15 ; clear R15
+    MOVZX R15, BL ; move green value to R15B
+    SUB R15B, tolerance ; subtract tolerance from green value
+    CMP DL, R15B ; compare red value with green value - tolerance
+    ;JG skipPixel ; if red value > green value - tolerance, jump to skipPixel
 
+    ; check if blue value is greater than green value + tolerance
+    CMP AL, R15B ; compare blue value with green value - tolerance
+    ;JG skipPixel ; if blue value > green value - tolerance, jump to skipPixel
+
+    MOV BYTE PTR [RCX + R14], 255      ; B = 255
+    MOV BYTE PTR [RCX + R14 + 1], 255  ; G = 255
+    MOV BYTE PTR [RCX + R14 + 2], 255  ; R = 255
+
+skipPixel:
     INC R12 ; increment x
     JMP columnLoop ; jump to columnLoop
 
@@ -58,6 +86,9 @@ nextRow:
     JMP rowLoop ; jump to rowLoop
 
 endLoop:
-        RET
+    ;MOV RSP, RBP ; restore RSP
+   ; POP RBP ; restore RBP
+    RET
+
 removeGreenScreenASM endp
 END
