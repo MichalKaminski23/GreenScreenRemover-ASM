@@ -15,11 +15,19 @@ namespace GreenScreenRemover
         private Bitmap bitmap;
 
         //Importing functions from external DLLs
-        [DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll", CallingConvention = CallingConvention.Cdecl)]
+        //[DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll", CallingConvention = CallingConvention.Cdecl)]
+        //static extern unsafe void removeGreenScreenASM(byte* pixels, int width, int startRow, int numRows);
+
+        //[DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll", CallingConvention = CallingConvention.Cdecl)]
+        //static extern unsafe void removeGreenScreenC(byte* pixels, int width, int startRow, int numRows);
+
+        //Importing functions from external DLLs
+        [DllImport(@"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern unsafe void removeGreenScreenASM(byte* pixels, int width, int startRow, int numRows);
 
-        [DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport(@"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern unsafe void removeGreenScreenC(byte* pixels, int width, int startRow, int numRows);
+
 
         // Initialaze the menu
         public Menu()
@@ -136,7 +144,7 @@ namespace GreenScreenRemover
             byte threadSelected = getThreadOption();
             byte dllOption = getDllOption();
 
-            string testImagePath = @"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\2JPG.jpg";
+            string testImagePath = @"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\img (10).jpg";
             beforePicture.Image = new Bitmap(testImagePath);
             beforePicture.SizeMode = PictureBoxSizeMode.StretchImage;
 

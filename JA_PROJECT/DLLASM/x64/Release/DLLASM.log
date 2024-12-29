@@ -1,4 +1,4 @@
 ﻿  Assembling JAAsm.asm...
-     Trwa tworzenie biblioteki D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.lib i obiektu D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.exp
+     Trwa tworzenie biblioteki C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.lib i obiektu C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.exp
   LINK : określono opcję /LTCG, lecz generowanie kodu nie było wymagane; usuń opcję /LTCG z wiersza polecenia konsolidatora w celu podwyższenia wydajności konsolidatora
-  DLLASM.vcxproj -> D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll
+  DLLASM.vcxproj -> C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll
