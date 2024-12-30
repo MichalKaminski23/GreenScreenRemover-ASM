@@ -1,10 +1,7 @@
 #include "pch.h"
 
-extern "C" __declspec(dllexport) void removeGreenScreenC(unsigned char* pixels, int width, int startRow, int numRows)
+extern "C" __declspec(dllexport) void removeGreenScreenC(unsigned char* pixels, int width, int startRow, int numRows, int stride)
 {
-    // Calculate the number of bytes per row (width * 3, because each pixel has 3 bytes: B, G, R)
-    int stride = width * 3;
-
     // Define the tolerance for red and blue values
     const int tolerance = 50;
 

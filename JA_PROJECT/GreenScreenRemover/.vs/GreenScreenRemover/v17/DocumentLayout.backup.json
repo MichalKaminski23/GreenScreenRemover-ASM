@@ -6,7 +6,7 @@
       "AbsoluteMoniker": "D:0:0:{C0CA7FF1-524C-41BE-8869-2A5D2C3194AE}|..\\DLLASM\\DLLASM.vcxproj|C:\\Users\\placu\\GreenScreenRemover-ASM\\JA_PROJECT\\DLLASM\\JAAsm.asm||{8B382828-6202-11D1-8870-0000F87579D2}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|C:\\Users\\placu\\GreenScreenRemover-ASM\\JA_PROJECT\\GreenScreenRemover\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|c:\\users\\placu\\greenscreenremover-asm\\ja_project\\greenscreenremover\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A6791B1E-E074-4339-8544-81BAAFECB249}|GreenScreenRemover.csproj|solutionrelative:menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -27,7 +27,7 @@
               "RelativeDocumentMoniker": "..\\DLLASM\\JAAsm.asm",
               "ToolTip": "C:\\Users\\placu\\GreenScreenRemover-ASM\\JA_PROJECT\\DLLASM\\JAAsm.asm",
               "RelativeToolTip": "..\\DLLASM\\JAAsm.asm",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-12-29T13:22:13.304Z",
               "EditorCaption": ""
@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "Menu.cs",
               "ToolTip": "C:\\Users\\placu\\GreenScreenRemover-ASM\\JA_PROJECT\\GreenScreenRemover\\Menu.cs",
               "RelativeToolTip": "Menu.cs",
-              "ViewState": "AgIAAIgAAAAAAAAAAAAqwIkAAAAUAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABUAAAB1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-28T18:47:44.215Z",
               "EditorCaption": ""
