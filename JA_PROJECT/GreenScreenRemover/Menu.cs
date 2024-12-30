@@ -135,7 +135,7 @@ namespace GreenScreenRemover
             //{
             //    return 255;
             //}
-            return 1;
+            return 2;
         }
 
         // Event handler for the remove green screen button
