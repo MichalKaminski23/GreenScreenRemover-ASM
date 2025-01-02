@@ -1,6 +1,28 @@
-tolerance EQU 50 ; tolerance for green color
-minGreen EQU 100 ; minimum green value
-strideMultiplier EQU 3 ; 3 bytes per pixel
+;tolerance EQU 50 ; tolerance for green color
+;minGreen EQU 100 ; minimum green value
+;strideMultiplier EQU 3 ; 3 bytes per pixel
+
+.data
+minGreen db 100
+
+tolerance db 50
+
+white db 255
+
+maskGreen db 0, 255, 0, 0, 255, 0, 0, 255, 
+                0, 0, 255, 0, 0, 255, 0, 0,
+                255, 0, 0, 255, 0, 0, 255, 0,
+                0, 255, 0, 0, 255, 0, 0, 255
+
+maskBlue db 255, 0, 0, 255, 0, 0, 255, 0, 
+              0, 255, 0, 0, 255, 0, 0, 255,
+              0, 0, 255, 0, 0, 255, 0, 0,
+              255, 0, 0, 255, 0, 0, 255, 0
+
+maskRed db 0, 0, 255, 0, 0, 255, 0, 0, 
+           255, 0, 0, 255, 0, 0, 255, 0,
+           0, 255, 0, 0, 255, 0, 0, 255,
+           0, 0, 255, 0, 0, 255, 0, 0
 
 .code
 ;Arguments (Windows x64 calling convention):
@@ -12,6 +34,10 @@ strideMultiplier EQU 3 ; 3 bytes per pixel
 removeGreenScreenASM proc
 
 MOV R10, [RSP + 40] ; move realStride (RSP + 40) to R10
+
+VPBROADCASTB ymm0, byte ptr [minGreen] ; broadcast minGreen to all elements of ymm0
+VPBROADCASTB ymm1, byte ptr [tolerance] ; broadcast tolerance to all elements of ymm1
+VPBROADCASTB ymm2, byte ptr [white] ; broadcast 255 to all elements of ymm2
 
 ; calculate endRow
 ADD R9, R8 ; add startRow (R8) to numRows (R9) 
@@ -33,7 +59,7 @@ columnLoop:
 
     ; x * 3
     MOV RBX, R12 ; move x (R12) to RBX
-    IMUL RBX, strideMultiplier ; RBX = R12 * strideMultiplier = x * 3
+    IMUL RBX, 3 ; RBX = R12 * 3 = x * 3
     ADD RAX, RBX ; RAX = y * realStride + x * 3
 
     MOV R13, RAX ; move index (RAX) to R13
@@ -45,12 +71,12 @@ columnLoop:
     MOV SIL, [RCX + R13 + 2] ; load red value
 
     ; check if green value is >= than minGreen
-    CMP BL, minGreen
+    CMP BL, [minGreen] ; compare green value with minGreen
     JB skipPixel ; JB = jump if below (unsigned compare) - if green value < minGreen, jump to skipPixel
 
     ; check if red value is <= than green value + tolerance
     MOVZX R14, BL ; move green value to R14
-    SUB R14B, tolerance ; subtract tolerance from green value
+    SUB R14B, [tolerance] ; subtract tolerance from green value
     CMP SIL, R14B ; compare red value with green value - tolerance
     JA skipPixel ; JA = jump if above (unsigned) - if red value > green value - tolerance, jump to skipPixel
 

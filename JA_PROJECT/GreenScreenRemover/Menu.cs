@@ -135,7 +135,7 @@ namespace GreenScreenRemover
             //{
             //    return 255;
             //}
-            return 4;
+            return 1;
         }
 
         // Event handler for the remove green screen button
@@ -144,7 +144,7 @@ namespace GreenScreenRemover
             byte threadSelected = getThreadOption();
             byte dllOption = getDllOption();
 
-            string testImagePath = @"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\img (6).jpg";
+            string testImagePath = @"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\images\photo (10).jpg";
             beforePicture.Image = new Bitmap(testImagePath);
             beforePicture.SizeMode = PictureBoxSizeMode.StretchImage;
 
