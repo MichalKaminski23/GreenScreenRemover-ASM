@@ -1,7 +1,3 @@
-;tolerance EQU 50 ; tolerance for green color
-;minGreen EQU 100 ; minimum green value
-;strideMultiplier EQU 3 ; 3 bytes per pixel
-
 .data
 minGreen db 100
 
@@ -9,20 +5,7 @@ tolerance db 50
 
 white db 255
 
-maskGreen db 0, 255, 0, 0, 255, 0, 0, 255, 
-                0, 0, 255, 0, 0, 255, 0, 0,
-                255, 0, 0, 255, 0, 0, 255, 0,
-                0, 255, 0, 0, 255, 0, 0, 255
-
-maskBlue db 255, 0, 0, 255, 0, 0, 255, 0, 
-              0, 255, 0, 0, 255, 0, 0, 255,
-              0, 0, 255, 0, 0, 255, 0, 0,
-              255, 0, 0, 255, 0, 0, 255, 0
-
-maskRed db 0, 0, 255, 0, 0, 255, 0, 0, 
-           255, 0, 0, 255, 0, 0, 255, 0,
-           0, 255, 0, 0, 255, 0, 0, 255,
-           0, 0, 255, 0, 0, 255, 0, 0
+adjustMask db 128
 
 .code
 ;Arguments (Windows x64 calling convention):
@@ -35,13 +18,15 @@ removeGreenScreenASM proc
 
 MOV R10, [RSP + 40] ; move realStride (RSP + 40) to R10
 
-VPBROADCASTB ymm0, byte ptr [minGreen] ; broadcast minGreen to all elements of ymm0
-VPBROADCASTB ymm1, byte ptr [tolerance] ; broadcast tolerance to all elements of ymm1
-VPBROADCASTB ymm2, byte ptr [white] ; broadcast 255 to all elements of ymm2
-
 ; calculate endRow
 ADD R9, R8 ; add startRow (R8) to numRows (R9) 
 MOV R11, R9 ; move numRows (R9) to R11
+
+    VPBROADCASTB YMM0, BYTE PTR [adjustMask]  ; Load adjust mask (128)
+    VPBROADCASTB YMM1, BYTE PTR [minGreen]    ; Broadcast minGreen to all elements
+    VPXOR YMM1, YMM1, YMM0                    ; Convert minGreen to signed
+    VPBROADCASTB YMM2, BYTE PTR [tolerance]   ; Broadcast tolerance
+    VPBROADCASTB YMM3, BYTE PTR [white]       ; Broadcast white color
 
 rowLoop:
     CMP R8, R11 ; check if R8 (y) == R11 (startRow + numRows)
@@ -61,36 +46,53 @@ columnLoop:
     MOV RBX, R12 ; move x (R12) to RBX
     IMUL RBX, 3 ; RBX = R12 * 3 = x * 3
     ADD RAX, RBX ; RAX = y * realStride + x * 3
-
     MOV R13, RAX ; move index (RAX) to R13
 
-    MOV R14, 0 ; clear R14
+    VMOVDQU YMM4, YMMWORD PTR [RCX + R13] ; Load 32 bytes (10 pixels) from memory into YMM4
 
-    MOV AL, [RCX + R13]     ; load blue value
-    MOV BL, [RCX + R13 + 1] ; load green value
-    MOV SIL, [RCX + R13 + 2] ; load red value
+    ; Extract green channel directly from BGRBGR...
+    VPSRLDQ   YMM5, YMM4, 1                    ; Shift right by 1 byte (green channel starts at 1st byte)
+    VPAND YMM5, YMM5, YMMWORD PTR [RCX + R13] ; Mask only green (if needed)
+    ;VPSHUFB YMM5, YMM4, YMMWORD PTR [RCX + R13 + 1]
+    ;VPXOR YMM5, YMM5, YMM0                   ; Convert green channel to signed
+    VPCMPGTB YMM6, YMM5, YMM1                ; Compare green with minGreen
 
-    ; check if green value is >= than minGreen
-    CMP BL, [minGreen] ; compare green value with minGreen
-    JB skipPixel ; JB = jump if below (unsigned compare) - if green value < minGreen, jump to skipPixel
+    VPSUBB YMM7, YMM5, YMM2                  ; G - tolerance
 
-    ; check if red value is <= than green value + tolerance
-    MOVZX R14, BL ; move green value to R14
-    SUB R14B, [tolerance] ; subtract tolerance from green value
-    CMP SIL, R14B ; compare red value with green value - tolerance
-    JA skipPixel ; JA = jump if above (unsigned) - if red value > green value - tolerance, jump to skipPixel
+    ; Extract red channel directly from BGRBGR...
+    VPSRLDQ  YMM8, YMM4, 2                    ; Shift right by 2 bytes (red channel starts at 2nd byte)
+    VPAND YMM8, YMM8, YMMWORD PTR [RCX + R13] ; Mask only red (if needed)
+    ;VPSHUFB YMM8, YMM4, YMMWORD PTR [RCX + R13 + 2] ; Red channel
+    ;VPXOR YMM8, YMM8, YMM0                   ; Convert red channel to signed
 
-    ; check if blue value is <= than green value + tolerance
-    CMP AL, R14B ; compare blue value with green value - tolerance
-    JA skipPixel ; if blue value > green value - tolerance, jump to skipPixel
+    VPCMPGTB YMM9, YMM8, YMM7               ; Compare red with (G - tolerance)
 
-    MOV BYTE PTR [RCX + R13], 255      ; B = 255
-    MOV BYTE PTR [RCX + R13 + 1], 255  ; G = 255
-    MOV BYTE PTR [RCX + R13 + 2], 255  ; R = 255
+     ; Extract blue channel directly from BGRBGR...
+    VPSRLDQ  YMM10, YMM4, 0                    ; Shift right by 0 bytes (blue channel starts at 0th byte)
+    VPAND YMM10, YMM10, YMMWORD PTR [RCX + R13] ; Mask only blue (if needed)
+    ;VPSHUFB YMM10, YMM4, YMMWORD PTR [RCX + R13] ; Blue channel
 
-skipPixel:
-    INC R12 ; increment x
-    JMP columnLoop ; jump to columnLoop
+    ;VPXOR YMM10, YMM10, YMM0                   ; Convert blue channel to signed
+
+    VPCMPGTB YMM11, YMM10, YMM7              ; Compare blue with (G - tolerance)
+
+    ; Combine conditions
+    VPAND YMM12, YMM6, YMM9                 ; G >= minGreen AND R <= (G - tolerance)
+    VPAND YMM12, YMM12, YMM11                ; AND B <= (G - tolerance)
+
+    ; Set pixel to white where condition is true
+    VPAND YMM14, YMM12, YMM3                 ; Extract white where mask is true
+    VPANDN YMM15, YMM12, YMM4                ; Extract original pixels where mask is false
+    VPOR YMM4, YMM14, YMM15                  ; Combine results
+
+    ; Store the processed pixel back to memory
+    VMOVDQU YMMWORD PTR [RCX + R13], YMM4
+
+
+    
+    ; Increment the column index by 10 (process next 10 pixels)
+    ADD r12, 10
+    JMP columnLoop
 
 nextRow:
     INC R8 ; increment y
