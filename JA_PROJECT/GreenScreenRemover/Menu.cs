@@ -177,10 +177,10 @@ namespace GreenScreenRemover
                     bitmap = new Bitmap(beforePicture.Image);
 
                     // Ensure the bitmap is in 24bpp RGB format
-                    if (bitmap.PixelFormat != PixelFormat.Format24bppRgb)
+                    if (bitmap.PixelFormat != PixelFormat.Format32bppRgb)
                     {
                         // Clone the bitmap to convert it to 24bpp RGB format
-                        bitmap = bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), PixelFormat.Format24bppRgb);
+                        bitmap = bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), PixelFormat.Format32bppRgb);
                     }
 
                     // Lock the bitmap's bits for read/write access

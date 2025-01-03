@@ -15,7 +15,7 @@ extern "C" __declspec(dllexport) void removeGreenScreenC(unsigned char* pixels, 
         for (int x = 0; x < width; ++x)
         {
             // Calculate the index of the current pixel in the pixel array
-            int index = y * stride + x * 3;
+            int index = y * stride + x * 4;
 
             // Retrieve the color values (B, G, R) of the current pixel
             unsigned char blue = pixels[index];
