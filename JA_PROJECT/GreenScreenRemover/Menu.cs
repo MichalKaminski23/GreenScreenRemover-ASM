@@ -23,10 +23,10 @@ namespace GreenScreenRemover
 
         //Importing functions from external DLLs
         [DllImport(@"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern unsafe void removeGreenScreenASM(byte* pixels, int width, int startRow, int numRows, int stride);
+        static extern unsafe void removeGreenScreenASM(byte* pixels, int width, int startRow, int numRows);
 
         [DllImport(@"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern unsafe void removeGreenScreenC(byte* pixels, int width, int startRow, int numRows, int stride);
+        static extern unsafe void removeGreenScreenC(byte* pixels, int width, int startRow, int numRows);
 
 
         // Initialaze the menu
@@ -177,10 +177,10 @@ namespace GreenScreenRemover
                     bitmap = new Bitmap(beforePicture.Image);
 
                     // Ensure the bitmap is in 24bpp RGB format
-                    if (bitmap.PixelFormat != PixelFormat.Format32bppRgb)
+                    if (bitmap.PixelFormat != PixelFormat.Format24bppRgb)
                     {
                         // Clone the bitmap to convert it to 24bpp RGB format
-                        bitmap = bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), PixelFormat.Format32bppRgb);
+                        bitmap = bitmap.Clone(new Rectangle(0, 0, bitmap.Width, bitmap.Height), PixelFormat.Format24bppRgb);
                     }
 
                     // Lock the bitmap's bits for read/write access
@@ -190,15 +190,44 @@ namespace GreenScreenRemover
                     // Get the address of the first pixel data
                     IntPtr ptr = bmpData.Scan0;
 
-                    // Declare an array to hold the bytes of the bitmap
-                    int bytes = Math.Abs(bmpData.Stride) * bitmap.Height;
-                    byte[] rgbValues = new byte[bytes];
-                    int realStride = Math.Abs(bmpData.Stride);
+                    // Calculate stride and padding
+                    int originalStride = Math.Abs(bmpData.Stride);
+                    int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                    int pixelDataStride = bitmap.Width * bytesPerPixel;
+                    int paddingPerRow = originalStride - pixelDataStride;
+                   // MessageBox.Show(originalStride.ToString());
+                   // MessageBox.Show(pixelDataStride.ToString());
+                   // int t = pixelDataStride * 3;
+                   // MessageBox.Show(t.ToString());
+                   // MessageBox.Show(bitmap.Width.ToString());
+                    // Informacja o paddingu
+                    if (paddingPerRow > 0)
+                    {
+                        //MessageBox.Show($"Padding na linię: {paddingPerRow} bajtów", "Informacja o Paddingu");
+                    }
+                    else
+                    {
+                        //MessageBox.Show("Brak paddingu w obrazie.", "Informacja o Paddingu");
+                    }
+
+                    // Calculate total bytes with padding
+                    int totalBytesWithPadding = originalStride * bitmap.Height;
+
+                    // Declare an array to hold the bytes of the bitmap with padding
+                    byte[] rgbValuesWithPadding = new byte[totalBytesWithPadding];
 
                     // Copy the RGB values into the array
-                    Marshal.Copy(ptr, rgbValues, 0, bytes);
+                    Marshal.Copy(ptr, rgbValuesWithPadding, 0, totalBytesWithPadding);
 
-                    fixed (byte* p = rgbValues)
+                    // Extract pixel data without padding
+                    byte[] pixelData = new byte[bitmap.Width * bytesPerPixel * bitmap.Height];
+
+                    for (int y = 0; y < bitmap.Height; y++)
+                    {
+                        Buffer.BlockCopy(rgbValuesWithPadding, y * originalStride, pixelData, y * bitmap.Width * bytesPerPixel, bitmap.Width * bytesPerPixel);
+                    }
+
+                    fixed (byte* pPixelData = pixelData)
                     {
                         // Start the stopwatch to measure processing time
                         Stopwatch sw = new Stopwatch();
@@ -218,9 +247,9 @@ namespace GreenScreenRemover
                             // var to store the index of the thread for debugging purposes
                             int threadIndex = i;
 
-                            // Create a pointer to the start of the RGB values for the thread
-                            byte* pLocal = p;
-                            //MessageBox.Show($"width={bitmap.Width}, startRow={startRow}, numRows={numRows}, stride={realStride}");
+                            // Create a pointer to the start of the pixel data for the thread
+                            byte* pLocal = pPixelData;
+
                             Thread thread = new Thread(() =>
                             {
                                 try
@@ -228,11 +257,11 @@ namespace GreenScreenRemover
                                     // Call the appropriate DLL function based on the selected option
                                     if (dllOption == 1)
                                     {
-                                        removeGreenScreenC(pLocal, bitmap.Width, startRow, numRows, realStride);
+                                        removeGreenScreenC(pLocal, bitmap.Width, startRow, numRows);
                                     }
                                     else if (dllOption == 2)
                                     {
-                                        removeGreenScreenASM(pLocal, bitmap.Width, startRow, numRows, realStride);
+                                        removeGreenScreenASM(pLocal, bitmap.Width, startRow, numRows);
                                     }
                                 }
                                 catch (Exception ex)
@@ -251,8 +280,17 @@ namespace GreenScreenRemover
                         // Stop the stopwatch
                         sw.Stop();
 
+                        // Copy the modified pixel data back into the rgbValuesWithPadding array
+                        for (int y = 0; y < bitmap.Height; y++)
+                        {
+                            Buffer.BlockCopy(pixelData, y * bitmap.Width * bytesPerPixel, rgbValuesWithPadding, y * originalStride, bitmap.Width * bytesPerPixel);
+                        }
+
                         // Copy the modified RGB values back to the bitmap
-                        Marshal.Copy(rgbValues, 0, ptr, bytes);
+                        Marshal.Copy(rgbValuesWithPadding, 0, ptr, totalBytesWithPadding);
+
+
+                        // Unlock the bits
                         bitmap.UnlockBits(bmpData);
 
                         // Update the UI to show the processed image
@@ -279,6 +317,7 @@ namespace GreenScreenRemover
                 }
             }
         }
+
 
         // Event handler for the save button
         private void saveButton_Click(object sender, EventArgs e)

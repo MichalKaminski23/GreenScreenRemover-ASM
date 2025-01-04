@@ -1,10 +1,5 @@
-tolerance EQU 50 ; tolerance value
-minGreen EQU 100 ; min value of green color
-
-.data
-    minGreenVector db 16 dup(minGreen) ; minGreenVector with 16 elements of minGreen
-    greenPlusToleranceVector db 16 dup(minGreen + tolerance) ; greenPlusToleranceVector with 16 elements of minGreen + tolerance
-    whiteVector db 16 dup(255) ; whiteVector with 16 elements of 255
+tolerance EQU 50 ; tolerance for green color
+minGreen EQU 100 ; minimum green value
 
 .code
 ;Arguments (Windows x64 calling convention):
@@ -12,15 +7,15 @@ minGreen EQU 100 ; min value of green color
 ;RDX = (int) width
 ;R8 = (int) startRow
 ;R9 = (int) numRows
-;[RSP+40] = (int) realStride
 removeGreenScreenASM proc
 
-MOV R10, [RSP + 40] ; move realStride (RSP + 40) to R10
+; calculate realStride
+MOV R10, RDX ; move width (RDX) to realStride (R10)
+IMUL R10, 3 ; realStride = width * 3
 
 ; calculate endRow
 ADD R9, R8 ; add startRow (R8) to numRows (R9) 
 MOV R11, R9 ; move numRows (R9) to R11
-
 
 rowLoop:
     CMP R8, R11 ; check if R8 (y) == R11 (startRow + numRows)
@@ -28,31 +23,45 @@ rowLoop:
     MOV R12, 0 ; clear R12 (x)
 
 columnLoop:
-    CMP R12, RDX ; check if R12 >= RDX (width)
-    JGE nextRow ; if R12 >= R13, jump to nextRow
+    CMP R12, R10 ; check if R12 >= R10
+    JGE nextRow ; if R12 >= R10, jump to nextRow
 
     ; y * realStride
     MOV RAX, R10 ; move realStride (R10) to RAX
     MOV RBX, R8 ; move y (R8) to RBX
     IMUL RAX, RBX ; RAX = RBX * R10 = y * realStride
 
-    ; x * 4
+    ; y * realStride + x
     MOV RBX, R12 ; move x (R12) to RBX
-    IMUL RBX, 4 ; RBX = R12 * 4 = x * 4
-    ADD RAX, RBX ; RAX = y * realStride + x * 4
+    ADD RAX, RBX ; RAX = RAX + RBX = y * realStride + x
     MOV R13, RAX ; move index (RAX) to R13
 
-    LEA R14, [RCX + R13] ; load address of pixels + index to R14
-        
-    MOVDQU XMM0, [R14] ; load 16 bytes to xmm0   
+    MOV R14, 0 ; clear R14
 
-    MOVDQU XMM1, [R14 + 1] ; load next 16 bytes to xmm1
-    PSHUFB XMM1, [minGreenVector] ; apply minGreenVector mask
+    MOV AL, [RCX + R13]     ; load blue value
+    MOV BL, [RCX + R13 + 1] ; load green value
+    MOV SIL, [RCX + R13 + 2] ; load red value
 
-    MOVDQU [R14], XMM1 ; store result in pixels
+    ; check if green value is >= than minGreen
+    CMP BL, minGreen
+    JB skipPixel ; JB = jump if below (unsigned compare) - if green value < minGreen, jump to skipPixel
+
+    ; check if red value is <= than green value + tolerance
+    MOVZX R14, BL ; move green value to R14
+    SUB R14B, tolerance ; subtract tolerance from green value
+    CMP SIL, R14B ; compare red value with green value - tolerance
+    JA skipPixel ; JA = jump if above (unsigned) - if red value > green value - tolerance, jump to skipPixel
+
+    ; check if blue value is <= than green value + tolerance
+    CMP AL, R14B ; compare blue value with green value - tolerance
+    JA skipPixel ; if blue value > green value - tolerance, jump to skipPixel
+
+    MOV BYTE PTR [RCX + R13], 255      ; B = 255
+    MOV BYTE PTR [RCX + R13 + 1], 255  ; G = 255
+    MOV BYTE PTR [RCX + R13 + 2], 255  ; R = 255
 
 skipPixel:
-    ADD R12, 4 ; add 4 to x (R12) 
+    ADD R12, 3 ; add 3 to x 
     JMP columnLoop ; jump to columnLoop
 
 nextRow:

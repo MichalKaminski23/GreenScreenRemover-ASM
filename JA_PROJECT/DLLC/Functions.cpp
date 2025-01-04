@@ -1,6 +1,6 @@
 #include "pch.h"
 
-extern "C" __declspec(dllexport) void removeGreenScreenC(unsigned char* pixels, int width, int startRow, int numRows, int stride)
+extern "C" __declspec(dllexport) void removeGreenScreenC(unsigned char* pixels, int width, int startRow, int numRows)
 {
     // Define the tolerance for red and blue values
     const int tolerance = 50;
@@ -15,7 +15,7 @@ extern "C" __declspec(dllexport) void removeGreenScreenC(unsigned char* pixels, 
         for (int x = 0; x < width; ++x)
         {
             // Calculate the index of the current pixel in the pixel array
-            int index = y * stride + x * 4;
+            int index = (y * width + x) * 3;
 
             // Retrieve the color values (B, G, R) of the current pixel
             unsigned char blue = pixels[index];
