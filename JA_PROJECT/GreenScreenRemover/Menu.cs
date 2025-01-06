@@ -144,9 +144,9 @@ namespace GreenScreenRemover
             byte threadSelected = getThreadOption();
             byte dllOption = getDllOption();
 
-            string testImagePath = @"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\images\photo (10).jpg";
-            beforePicture.Image = new Bitmap(testImagePath);
-            beforePicture.SizeMode = PictureBoxSizeMode.StretchImage;
+            //string testImagePath = @"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\images\photo (10).jpg";
+            //beforePicture.Image = new Bitmap(testImagePath);
+            //beforePicture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             if (threadSelected == 255)
             {
@@ -212,6 +212,7 @@ namespace GreenScreenRemover
 
                     // Calculate total bytes with padding
                     int totalBytesWithPadding = originalStride * bitmap.Height;
+                    // MessageBox.Show(totalBytesWithPadding.ToString());
 
                     // Declare an array to hold the bytes of the bitmap with padding
                     byte[] rgbValuesWithPadding = new byte[totalBytesWithPadding];
