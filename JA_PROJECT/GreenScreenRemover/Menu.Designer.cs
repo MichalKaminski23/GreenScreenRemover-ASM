@@ -289,18 +289,18 @@
             // 
             this.timeTextLabel.AutoSize = true;
             this.timeTextLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.timeTextLabel.Location = new System.Drawing.Point(12, 572);
+            this.timeTextLabel.Location = new System.Drawing.Point(8, 572);
             this.timeTextLabel.Name = "timeTextLabel";
-            this.timeTextLabel.Size = new System.Drawing.Size(390, 20);
+            this.timeTextLabel.Size = new System.Drawing.Size(427, 20);
             this.timeTextLabel.TabIndex = 19;
-            this.timeTextLabel.Text = "Time for selected threads, DLL and photo [ms]: \r\n";
+            this.timeTextLabel.Text = "Execution time for selected threads, DLL and photo:";
             this.timeTextLabel.Visible = false;
             // 
             // timeResultLabel
             // 
             this.timeResultLabel.AutoSize = true;
             this.timeResultLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.timeResultLabel.Location = new System.Drawing.Point(401, 572);
+            this.timeResultLabel.Location = new System.Drawing.Point(471, 572);
             this.timeResultLabel.Name = "timeResultLabel";
             this.timeResultLabel.Size = new System.Drawing.Size(0, 20);
             this.timeResultLabel.TabIndex = 20;

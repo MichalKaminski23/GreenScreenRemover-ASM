@@ -1,5 +1,31 @@
 #include "pch.h"
+//---------------------------------------
+//Project:     Green screen remover
+//
+//Description: The algorithm takes the address of the pixel array,
+//             then iterates over each pixel byte by byte and compares whether green is green(100),
+//             red is less than green and tolerance(50) and so is blue.
+//             If the conditions are met the pixel is changed to white(255),
+//             otherwise the pixel is skipped and the next pixel is checked, until the end of the array.
+//
+//Author / Studies: Micha³ Kamiñski, INF AEI Gliwice, year 3 semester 5
+//
+//Versions:   0.1: Initial version (without multithreading) - rest works
+//            0.2: Added multithreading
+//            0.3: Changed the way the index is calculated
+//            1.0: Everything works
+//---------------------------------------
 
+//--------------------------------------
+//removeGreenScreenC - removes green screen from image loaded by the user
+//Inputs:
+//  (unsigned char*) pixels
+//  (int) width
+//  (int) startRow
+//  (int) numRows
+//Outputs:
+// (unsigned char*) pixels with removed green screen
+// --------------------------------------
 extern "C" __declspec(dllexport) void removeGreenScreenC(unsigned char* pixels, int width, int startRow, int numRows)
 {
     // Define the tolerance for red and blue values

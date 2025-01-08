@@ -7,41 +7,53 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+//---------------------------------------
+//Project:     Green screen remover
+//
+//Description: The algorithm takes the address of the pixel array,
+//             then iterates over each pixel byte by byte and compares whether green is green(100),
+//             red is less than green and tolerance(50) and so is blue.
+//             If the conditions are met the pixel is changed to white(255),
+//             otherwise the pixel is skipped and the next pixel is checked, until the end of the array.
+//
+//Author / Studies: Michał Kamiński, INF AEI Gliwice, year 3 semester 5
+//
+//Versions:   0.1: Menu with buttons, checkboxes and picture boxes
+//            0.2: Added the ability to load a picture, remove green screen (C) and save the modified image
+//            0.3: Added the ability to choose the number of threads and the DLL to use
+//            0.4: Added the ability to remove green screen using ASM
+//            1.0: Everything works
+//---------------------------------------
 
 namespace GreenScreenRemover
 {
     public partial class Menu : Form
     {
+        // bitmap to store the image
         private Bitmap bitmap;
 
-        //Importing functions from external DLLs
-        //[DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll", CallingConvention = CallingConvention.Cdecl)]
-        //static extern unsafe void removeGreenScreenASM(byte* pixels, int width, int startRow, int numRows, int stride);
-
-        //[DllImport(@"D:\OneDrive\STUDIA\ROK_3\JA\PROJEKT\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll", CallingConvention = CallingConvention.Cdecl)]
-        //static extern unsafe void removeGreenScreenC(byte* pixels, int width, int startRow, int numRows, int stride);
-
-        //Importing functions from external DLLs
-        [DllImport(@"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\x64\Release\DLLASM.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern unsafe void removeGreenScreenASM(byte* pixels, int width, int startRow, int numRows);
-
-        [DllImport(@"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\x64\Release\DLLC.dll", CallingConvention = CallingConvention.Cdecl)]
+        //Importing function in C from DLL
+        [DllImport(@"absolute path only works\GreenScreenRemover\x64\Release\DLLC.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern unsafe void removeGreenScreenC(byte* pixels, int width, int startRow, int numRows);
 
+        //Importing function in ASM from DLL
+        [DllImport(@"absolute path only works\GreenScreenRemover\x64\Release\DLLASM.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern unsafe void removeGreenScreenASM(byte* pixels, int width, int startRow, int numRows);
 
-        // Initialaze the menu
+        // Initialaze the menu to display the form
         public Menu()
         {
             InitializeComponent();
         }
 
-        // Event handler for the exit button
+        // Event handler for the exit button to close the application
         private void exitButton_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
-        // Event handler for the open file button
+        // Event handler for the open file button to load a picture and check if it is bmp or jpg
+        // and display it in the beforePicture PictureBox
         private void openFileButton_Click(object sender, EventArgs e)
         {
             beforePicture.Visible = true;
@@ -82,71 +94,65 @@ namespace GreenScreenRemover
             }
         }
 
-        // Get the selected DLL option
+        // Get the selected DLL option to use for processing the image (C or ASM)
         private byte getDllOption()
         {
-            //if (cButton.Checked)
-            //{
-            //    return 1;
-            //}
-            //else if (asmButton.Checked)
-            //{
-            //    return 2;
-            //}
-            //else
-            //{
-            //    return 255;
-            //}
-            return 2;
+            if (cButton.Checked)
+            {
+                return 1;
+            }
+            else if (asmButton.Checked)
+            {
+                return 2;
+            }
+            else
+            {
+                return 255;
+            }
         }
 
-        // Get the selected thread option
+        // Get the selected thread option to use for processing the image (1, 2, 4, 8, 16, 32, 64)
         private byte getThreadOption()
         {
-            //if (thread1.Checked)
-            //{
-            //    return 1;
-            //}
-            //else if (thread2.Checked)
-            //{
-            //    return 2;
-            //}
-            //else if (thread4.Checked)
-            //{
-            //    return 4;
-            //}
-            //else if (thread8.Checked)
-            //{
-            //    return 8;
-            //}
-            //else if (thread16.Checked)
-            //{
-            //    return 16;
-            //}
-            //else if (thread32.Checked)
-            //{
-            //    return 32;
-            //}
-            //else if (thread64.Checked)
-            //{
-            //    return 64;
-            //}
-            //else
-            //{
-            //    return 255;
-            //}
-            return 1;
+            if (thread1.Checked)
+            {
+                return 1;
+            }
+            else if (thread2.Checked)
+            {
+                return 2;
+            }
+            else if (thread4.Checked)
+            {
+                return 4;
+            }
+            else if (thread8.Checked)
+            {
+                return 8;
+            }
+            else if (thread16.Checked)
+            {
+                return 16;
+            }
+            else if (thread32.Checked)
+            {
+                return 32;
+            }
+            else if (thread64.Checked)
+            {
+                return 64;
+            }
+            else
+            {
+                return 255;
+            }
         }
 
-        // Event handler for the remove green screen button
+        // Event handler for the remove green screen button to process the image
         private void removeGreenScreenButton_Click(object sender, EventArgs e)
         {
             byte threadSelected = getThreadOption();
             byte dllOption = getDllOption();
-
-            //string testImagePath = @"C:\Users\placu\GreenScreenRemover-ASM\JA_PROJECT\GreenScreenRemover\images\photo (10).jpg";
-            //beforePicture.Image = new Bitmap(testImagePath);
-            //beforePicture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             if (threadSelected == 255)
             {
@@ -166,7 +172,8 @@ namespace GreenScreenRemover
             processImage(dllOption, threadSelected);
         }
 
-        // Process the image to remove the green screen
+        // Process the image to remove the green screen using the selected DLL (C or ASM) and number of threads (1, 2, 4, 8, 16, 32, 64)
+        // This function has two arguments: the selected DLL option and the selected number of threads
         private void processImage(byte dllOption, byte threadsSelected)
         {
             unsafe
@@ -195,24 +202,9 @@ namespace GreenScreenRemover
                     int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
                     int pixelDataStride = bitmap.Width * bytesPerPixel;
                     int paddingPerRow = originalStride - pixelDataStride;
-                   // MessageBox.Show(originalStride.ToString());
-                   // MessageBox.Show(pixelDataStride.ToString());
-                   // int t = pixelDataStride * 3;
-                   // MessageBox.Show(t.ToString());
-                   // MessageBox.Show(bitmap.Width.ToString());
-                    // Informacja o paddingu
-                    if (paddingPerRow > 0)
-                    {
-                        //MessageBox.Show($"Padding na linię: {paddingPerRow} bajtów", "Informacja o Paddingu");
-                    }
-                    else
-                    {
-                        //MessageBox.Show("Brak paddingu w obrazie.", "Informacja o Paddingu");
-                    }
 
                     // Calculate total bytes with padding
                     int totalBytesWithPadding = originalStride * bitmap.Height;
-                    // MessageBox.Show(totalBytesWithPadding.ToString());
 
                     // Declare an array to hold the bytes of the bitmap with padding
                     byte[] rgbValuesWithPadding = new byte[totalBytesWithPadding];
@@ -223,6 +215,7 @@ namespace GreenScreenRemover
                     // Extract pixel data without padding
                     byte[] pixelData = new byte[bitmap.Width * bytesPerPixel * bitmap.Height];
 
+                    // Copy the pixel data from the array with padding to the array without padding
                     for (int y = 0; y < bitmap.Height; y++)
                     {
                         Buffer.BlockCopy(rgbValuesWithPadding, y * originalStride, pixelData, y * bitmap.Width * bytesPerPixel, bitmap.Width * bytesPerPixel);
@@ -255,7 +248,7 @@ namespace GreenScreenRemover
                             {
                                 try
                                 {
-                                    // Call the appropriate DLL function based on the selected option
+                                    // Call the appropriate DLL function based on the selected option (C or ASM) to remove the green screen
                                     if (dllOption == 1)
                                     {
                                         removeGreenScreenC(pLocal, bitmap.Width, startRow, numRows);
@@ -290,7 +283,6 @@ namespace GreenScreenRemover
                         // Copy the modified RGB values back to the bitmap
                         Marshal.Copy(rgbValuesWithPadding, 0, ptr, totalBytesWithPadding);
 
-
                         // Unlock the bits
                         bitmap.UnlockBits(bmpData);
 
@@ -303,7 +295,7 @@ namespace GreenScreenRemover
                         // Display the processing time
                         timeTextLabel.Visible = true;
                         timeResultLabel.Visible = true;
-                        timeResultLabel.Text = sw.ElapsedMilliseconds.ToString() + " ms";
+                        timeResultLabel.Text = sw.Elapsed.ToString();
 
                         // Enable the save button and attach the click event handler
                         saveButton.Visible = true;
@@ -320,7 +312,7 @@ namespace GreenScreenRemover
         }
 
 
-        // Event handler for the save button
+        // Event handler for the save button to save the modified image as a bmp or jpg file on the desktop with the name "modified_image"
         private void saveButton_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog saveFileDialog = new SaveFileDialog())
